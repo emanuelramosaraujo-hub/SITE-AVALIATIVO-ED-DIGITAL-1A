@@ -1,115 +1,89 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&display=swap');
 
 :root {
-    --bg: #0f172a;
-    --card-bg: rgba(30, 41, 59, 0.7);
+    --bg: #020617;
+    --card-bg: rgba(30, 41, 59, 0.5);
     --accent: #38bdf8;
-    --text-main: #f1f5f9;
-    --text-dim: #94a3b8;
+    --text: #f1f5f9;
 }
 
 body {
-    background-color: var(--bg);
-    background-image: radial-gradient(circle at 50% 0%, #1e293b 0%, #0f172a 100%);
-    color: var(--text-main);
+    background: var(--bg);
+    background-image: radial-gradient(circle at 50% 0%, #1e293b 0%, #020617 100%);
+    color: var(--text);
     font-family: 'Inter', sans-serif;
     margin: 0;
-    line-height: 1.6;
 }
 
 header {
-    height: 60vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    padding: 80px 20px;
     text-align: center;
-    border-bottom: 1px solid rgba(255,255,255,0.1);
 }
 
 h1 {
-    font-size: 3.5rem;
-    margin: 0;
-    background: linear-gradient(to right, #fff, var(--accent));
+    font-size: 3rem;
+    background: linear-gradient(to bottom, #fff, var(--accent));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    letter-spacing: -2px;
+    margin: 0;
 }
 
 .timeline {
-    max-width: 800px;
-    margin: -50px auto 100px;
+    max-width: 600px;
+    margin: 0 auto 100px;
     padding: 20px;
-    position: relative;
+    border-left: 2px solid rgba(56, 189, 248, 0.3);
 }
 
-/* Linha Central Moderna */
-.timeline::after {
-    content: '';
-    position: absolute;
-    width: 2px;
-    background: linear-gradient(to bottom, var(--accent), transparent);
-    top: 0;
-    bottom: 0;
-    left: 50%;
-    margin-left: -1px;
+.category-tag {
+    background: var(--accent);
+    color: #000;
+    font-size: 0.65rem;
+    font-weight: 800;
+    padding: 3px 10px;
+    border-radius: 50px;
+    display: inline-block;
+    margin-bottom: 10px;
 }
 
 .card {
-    padding: 30px;
     background: var(--card-bg);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 24px;
-    position: relative;
-    width: 80%;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 20px;
+    padding: 25px;
     margin-bottom: 40px;
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    margin-left: 20px;
+    transition: 0.4s ease;
     cursor: pointer;
 }
 
 .card:hover {
     transform: translateY(-10px);
     border-color: var(--accent);
-    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.5);
 }
 
-.card h2 {
-    margin-top: 10px;
-    color: var(--accent);
-}
-
-.card small {
-    color: var(--text-dim);
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    font-weight: 700;
-}
-
-/* Barra de Progresso no Topo */
-#progress-container {
-    position: fixed;
-    top: 0;
-    width: 100%;
-    height: 4px;
-    z-index: 1000;
-}
-
-#progress-bar {
-    height: 100%;
-    background: var(--accent);
-    width: 0%;
-    box-shadow: 0 0 15px var(--accent);
-}
-
-@media (max-width: 768px) {
-    .timeline::after { left: 30px; }
-    .card { width: 85%; margin-left: 50px; }
-    h1 { font-size: 2.2rem; }
-}
 .card img {
-    max-height: 200px;
+    width: 100%;
+    height: 180px;
     object-fit: cover;
-    display: block;
+    border-radius: 12px;
+    margin: 15px 0;
 }
+
+.topics-list {
+    list-style: none;
+    padding: 0;
+    margin: 15px 0 0;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    padding-top: 15px;
+}
+
+.topics-list li {
+    font-size: 0.85rem;
+    color: #94a3b8;
+    margin-bottom: 5px;
+}
+
+.card:hover .topics-list li { color: #fff; }
