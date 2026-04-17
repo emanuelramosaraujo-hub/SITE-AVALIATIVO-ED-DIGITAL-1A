@@ -1,139 +1,99 @@
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&family=Inter:wght@300;400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&family=Syncopate:wght@400;700&display=swap');
 
 :root {
-    --bg: #050505;
-    --accent: #38bdf8;
-    --card-bg: #0f172a;
-    --text: #e2e8f0;
+    --bg: #000;
+    --accent: #00f2ff;
+    --glass: rgba(255, 255, 255, 0.03);
+    --border: rgba(255, 255, 255, 0.1);
 }
+
+* { box-sizing: border-box; }
 
 body {
     background: var(--bg);
-    color: var(--text);
-    font-family: 'Inter', sans-serif;
+    color: #fff;
+    font-family: 'Space Grotesk', sans-serif;
     margin: 0;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
 }
 
-/* Divisórias entre descobertas */
-.timeline-divider {
-    text-align: center;
-    margin: 80px 0;
-    position: relative;
+/* Loader */
+#loader {
+    position: fixed; inset: 0; background: #000; z-index: 10000;
+    display: flex; flex-direction: column; justify-content: center; align-items: center;
+    transition: 1s ease-in-out;
 }
-.timeline-divider::before {
-    content: '';
-    position: absolute;
-    top: 50%; left: 0; width: 100%; height: 1px;
-    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+.spinner {
+    width: 50px; height: 50px; border: 3px solid var(--accent);
+    border-top-color: transparent; border-radius: 50%;
+    animation: spin 1s linear infinite; margin-bottom: 20px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Hero Section */
+.hero {
+    height: 100vh; display: flex; align-items: center; justify-content: center;
+    position: relative; overflow: hidden;
+}
+.bg-vignette {
+    position: absolute; inset: 0;
+    background: radial-gradient(circle, transparent 20%, #000 90%);
     z-index: 1;
 }
-.timeline-divider span {
-    background: var(--bg);
-    padding: 10px 20px;
-    position: relative;
-    z-index: 2;
-    text-transform: uppercase;
-    letter-spacing: 4px;
-    font-size: 0.8rem;
-    color: var(--accent);
+.hero-content { z-index: 2; text-align: center; }
+.pre-title { letter-spacing: 5px; color: var(--accent); font-size: 0.8rem; text-transform: uppercase; }
+.main-title {
+    font-family: 'Syncopate', sans-serif; font-size: clamp(3rem, 15vw, 10rem);
+    margin: 20px 0; font-weight: 700; letter-spacing: -2px;
+    background: linear-gradient(to bottom, #fff, #444);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
 }
 
-.hero {
-    height: 80vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: radial-gradient(circle at center, #1e293b 0%, #050505 100%);
+/* Timeline Layout */
+.section-card {
+    min-height: 100vh; display: flex; align-items: center; justify-content: center;
+    padding: 100px 5%; position: relative;
 }
 
-h1 {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: clamp(4rem, 12vw, 8rem);
-    margin: 0;
-    font-weight: 700;
+.card-inner {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 80px;
+    max-width: 1200px; width: 100%; align-items: center;
 }
 
-.main-content {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding-bottom: 100px;
+.img-box {
+    position: relative; border-radius: 40px; overflow: hidden;
+    border: 1px solid var(--border); transition: 0.8s cubic-bezier(0.2, 1, 0.3, 1);
+}
+.img-box img { 
+    width: 100%; height: 500px; object-fit: contain; background: #080808; 
+    transition: 1.2s;
 }
 
-.card {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 60px;
-    margin-bottom: 150px;
-    align-items: start;
-    padding: 0 20px;
+.info-box { position: relative; }
+.year-tag { font-family: 'Syncopate'; color: var(--accent); font-size: 2rem; margin-bottom: 10px; display: block; }
+h2 { font-size: 3.5rem; margin: 10px 0; font-weight: 700; line-height: 1; }
+p { font-size: 1.2rem; color: #aaa; line-height: 1.8; }
+
+.features {
+    display: flex; gap: 15px; margin-top: 30px;
+}
+.feat {
+    padding: 8px 18px; background: var(--glass); border: 1px solid var(--border);
+    border-radius: 12px; font-size: 0.8rem; color: var(--accent);
 }
 
-.card:nth-child(even) { direction: rtl; }
-.card:nth-child(even) .card-info { direction: ltr; }
-
-.card-image-box {
-    position: relative;
-    border-radius: 20px;
-    overflow: hidden;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+/* Scroll Progress */
+#scroll-progress {
+    position: fixed; top: 0; left: 0; width: 0%; height: 4px;
+    background: var(--accent); z-index: 9999; box-shadow: 0 0 20px var(--accent);
 }
 
-.card img {
-    width: 100%;
-    height: 450px;
-    object-fit: contain; /* Para não cortar nada */
-    background: #000;
-    transition: 0.6s;
-}
+/* Animations */
+.reveal { opacity: 0; transform: translateY(80px); transition: 1s all ease-out; }
+.reveal.active { opacity: 1; transform: translateY(0); }
 
-.card:hover img { transform: scale(1.05); }
-
-.card-info { padding-top: 20px; }
-
-.year-badge {
-    font-size: 3rem;
-    font-weight: 700;
-    color: var(--accent);
-    font-family: 'Space Grotesk', sans-serif;
-    display: block;
-    margin-bottom: 10px;
-}
-
-.card-info h2 {
-    font-size: 2.2rem;
-    margin-bottom: 20px;
-    border-bottom: 2px solid var(--accent);
-    display: inline-block;
-}
-
-.card-description {
-    font-size: 1.1rem;
-    line-height: 1.8;
-    color: #94a3b8;
-    margin-bottom: 30px;
-}
-
-.details-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 15px;
-}
-
-.detail-item {
-    background: rgba(56, 189, 248, 0.1);
-    padding: 15px;
-    border-radius: 12px;
-    font-size: 0.9rem;
-    border-left: 3px solid var(--accent);
-}
-
-#progress-bar {
-    position: fixed; top: 0; height: 5px; background: var(--accent);
-    z-index: 1000; width: 0%; box-shadow: 0 0 10px var(--accent);
-}
-
-@media (max-width: 850px) {
-    .card { grid-template-columns: 1fr; }
-    .card:nth-child(even) { direction: ltr; }
-    .card img { height: 300px; }
+@media (max-width: 900px) {
+    .card-inner { grid-template-columns: 1fr; text-align: center; gap: 40px; }
+    .img-box img { height: 300px; }
 }
