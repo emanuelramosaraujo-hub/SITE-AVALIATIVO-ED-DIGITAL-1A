@@ -2,15 +2,29 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Linha do Tempo Oficial</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chronos | A Evolução da Civilização</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <header style="background:#0f172a; color:white; padding:50px; text-align:center;">
-        <h1>Linha do Tempo das Descobertas</h1>
-        <p>Clique nos cards para ouvir o som!</p>
+    <div id="progress-container"><div id="progress-bar"></div></div>
+
+    <header class="hero">
+        <div class="hero-inner">
+            <span class="tagline">Grande Projeto de Ed. Digital</span>
+            <h1>CHRONOS</h1>
+            <p>Uma jornada detalhada pelas viragens tecnológicas que definiram a humanidade.</p>
+        </div>
     </header>
-    <main id="timeline" style="max-width:600px; margin:auto; padding:20px;"></main>
+
+    <div class="timeline-divider"><span>Início da Jornada</span></div>
+
+    <main id="timeline" class="main-content"></main>
+
+    <footer class="footer">
+        <p>Site desenvolvido para Avaliação de Educação Digital</p>
+    </footer>
+
     <audio id="click-sound" src="https://www.soundjay.com/buttons/sounds/button-16.mp3"></audio>
     <script src="script.js"></script>
 </body>
