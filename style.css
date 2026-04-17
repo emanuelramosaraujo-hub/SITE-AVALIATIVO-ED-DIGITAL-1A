@@ -1,81 +1,139 @@
-const descobertas = [
-    { 
-        ano: "≈ 400.000 a.C.", t: "O Despertar do Fogo", cat: "Evolução Humana",
-        d: "Mais que calor, o fogo trouxe o cozimento, a luz e a união das tribos ao redor das chamas.",
-        img: "fogo.png" 
-    },
-    { 
-        ano: "1450", t: "A Prensa de Gutenberg", cat: "Conhecimento",
-        d: "A primeira grande revolução da informação. O mundo nunca mais ficaria em silêncio.",
-        img: "prensa.png"
-    },
-    { 
-        ano: "1879", t: "A Era da Luz", cat: "Energia",
-        d: "Thomas Edison não inventou apenas a lâmpada, ele inventou o estilo de vida moderno.",
-        img: "lampada.png"
-    },
-    { 
-        ano: "1928", t: "O Milagre da Penicilina", cat: "Medicina",
-        d: "Alexander Fleming descobriu a arma definitiva contra as doenças, mudando nossa história.",
-        img: "penicilina.png"
-    },
-    { 
-        ano: "1969", t: "A Conquista da Lua", cat: "Exploração",
-        d: "O momento em que a Terra ficou pequena e o universo se tornou o nosso novo quintal.",
-        img: "apollo.png"
-    },
-    { 
-        ano: "2023", t: "Singularidade da IA", cat: "Futuro",
-        d: "A inteligência artificial generativa redefine o que significa ser criativo e produtivo.",
-        img: "ia.png"
-    }
-];
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&family=Inter:wght@300;400;600&display=swap');
 
-const container = document.getElementById('timeline');
-const clickSound = document.getElementById('click-sound');
-
-function render() {
-    descobertas.forEach((item) => {
-        const card = document.createElement('section');
-        card.className = 'card';
-        card.innerHTML = `
-            <div class="img-container">
-                <img src="${item.img}" alt="${item.t}">
-            </div>
-            <div class="card-content">
-                <span class="category">${item.cat} • ${item.ano}</span>
-                <h2>${item.t}</h2>
-                <p>${item.d}</p>
-            </div>
-        `;
-        
-        card.addEventListener('mouseenter', () => {
-            clickSound.currentTime = 0;
-            clickSound.volume = 0.2;
-            clickSound.play();
-        });
-
-        container.appendChild(card);
-    });
-
-    // Observer para animar os cards ao rolar
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('visible');
-            }
-        });
-    }, { threshold: 0.2 });
-
-    document.querySelectorAll('.card').forEach(card => observer.observe(card));
+:root {
+    --bg: #050505;
+    --accent: #38bdf8;
+    --card-bg: #0f172a;
+    --text: #e2e8f0;
 }
 
-// Lógica da Barra de Progresso
-window.addEventListener('scroll', () => {
-    const winScroll = document.documentElement.scrollTop;
-    const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-    const scrolled = (winScroll / height) * 100;
-    document.getElementById("progress-bar").style.width = scrolled + "%";
-});
+body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+}
 
-render();
+/* Divisórias entre descobertas */
+.timeline-divider {
+    text-align: center;
+    margin: 80px 0;
+    position: relative;
+}
+.timeline-divider::before {
+    content: '';
+    position: absolute;
+    top: 50%; left: 0; width: 100%; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    z-index: 1;
+}
+.timeline-divider span {
+    background: var(--bg);
+    padding: 10px 20px;
+    position: relative;
+    z-index: 2;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    font-size: 0.8rem;
+    color: var(--accent);
+}
+
+.hero {
+    height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(circle at center, #1e293b 0%, #050505 100%);
+}
+
+h1 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(4rem, 12vw, 8rem);
+    margin: 0;
+    font-weight: 700;
+}
+
+.main-content {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding-bottom: 100px;
+}
+
+.card {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    margin-bottom: 150px;
+    align-items: start;
+    padding: 0 20px;
+}
+
+.card:nth-child(even) { direction: rtl; }
+.card:nth-child(even) .card-info { direction: ltr; }
+
+.card-image-box {
+    position: relative;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+}
+
+.card img {
+    width: 100%;
+    height: 450px;
+    object-fit: contain; /* Para não cortar nada */
+    background: #000;
+    transition: 0.6s;
+}
+
+.card:hover img { transform: scale(1.05); }
+
+.card-info { padding-top: 20px; }
+
+.year-badge {
+    font-size: 3rem;
+    font-weight: 700;
+    color: var(--accent);
+    font-family: 'Space Grotesk', sans-serif;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.card-info h2 {
+    font-size: 2.2rem;
+    margin-bottom: 20px;
+    border-bottom: 2px solid var(--accent);
+    display: inline-block;
+}
+
+.card-description {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: #94a3b8;
+    margin-bottom: 30px;
+}
+
+.details-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.detail-item {
+    background: rgba(56, 189, 248, 0.1);
+    padding: 15px;
+    border-radius: 12px;
+    font-size: 0.9rem;
+    border-left: 3px solid var(--accent);
+}
+
+#progress-bar {
+    position: fixed; top: 0; height: 5px; background: var(--accent);
+    z-index: 1000; width: 0%; box-shadow: 0 0 10px var(--accent);
+}
+
+@media (max-width: 850px) {
+    .card { grid-template-columns: 1fr; }
+    .card:nth-child(even) { direction: ltr; }
+    .card img { height: 300px; }
+}
