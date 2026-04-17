@@ -1,26 +1,21 @@
-:root {
-    --primary: #0f172a; --accent: #38bdf8; --bg: #f8fafc;
-    --card: #ffffff; --text: #1e293b; --radius: 20px;
-}
-body.high-contrast {
-    --primary: #ffffff; --accent: #ffff00; --bg: #000000; --card: #111; --text: #fff;
-}
-body { background: var(--bg); color: var(--text); font-family: sans-serif; margin: 0; transition: 0.4s; }
-#progress-container { position: fixed; top: 0; width: 100%; height: 6px; z-index: 999; background: rgba(0,0,0,0.1); }
-#progress-bar { height: 100%; width: 0%; background: var(--accent); }
-header { background: var(--primary); color: white; padding: 60px 20px; text-align: center; }
-#search-input { margin-top: 20px; padding: 12px; border-radius: 25px; border: none; width: 250px; }
-.timeline { position: relative; max-width: 800px; margin: 50px auto; padding: 20px; }
-.main-line { position: absolute; left: 50%; width: 4px; height: 100%; background: var(--accent); transform: translateX(-50%); }
-.card { 
-    background: var(--card); border: 1px solid #ddd; padding: 20px; 
-    border-radius: var(--radius); margin: 20px 0; width: 45%; 
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1); position: relative;
-    opacity: 0; transform: translateY(30px); transition: 0.6s;
-}
-.card.show { opacity: 1; transform: translateY(0); }
-.timeline-render > div:nth-child(odd) .card { margin-left: auto; }
-@media (max-width: 600px) {
-    .main-line { left: 20px; }
-    .card { width: 80%; margin-left: 40px !important; }
-}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Linha do Tempo das Descobertas</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="progress-container"><div id="progress-bar"></div></div>
+    <header>
+        <h1>Linha do Tempo das Descobertas</h1>
+        <p>A jornada da humanidade através dos séculos</p>
+        <nav class="controls">
+            <button id="toggle-contrast">🌓 Contraste</button>
+        </nav>
+    </header>
+    <main id="timeline-render" class="timeline"></main>
+    <script src="script.js"></script>
+</body>
+</html>
