@@ -1,81 +1,84 @@
 const descobertas = [
     { 
-        ano: "≈ 400.000 a.C.", t: "O Despertar do Fogo", cat: "Evolução Humana",
-        d: "Mais que calor, o fogo trouxe o cozimento, a luz e a união das tribos ao redor das chamas.",
+        ano: "-400k", 
+        titulo: "O Domínio do Fogo", 
+        desc: "A transição fundamental da nossa espécie. O fogo permitiu o cozimento de proteínas, o que acelerou o desenvolvimento do cérebro humano, além de criar o primeiro ambiente social ao redor das fogueiras.",
+        detalhes: ["Expansão Cerebral", "Segurança Noturna", "Socialização"],
         img: "fogo.png" 
     },
     { 
-        ano: "1450", t: "A Prensa de Gutenberg", cat: "Conhecimento",
-        d: "A primeira grande revolução da informação. O mundo nunca mais ficaria em silêncio.",
+        ano: "1450", 
+        titulo: "A Prensa de Gutenberg", 
+        desc: "Johannes Gutenberg democratizou o acesso à Bíblia e aos clássicos, quebrando o monopólio da informação. Sem esta invenção, movimentos como a Ciência Moderna não teriam ocorrido tão rápido.",
+        detalhes: ["Fim do Monopólio", "Alfabetização", "Produção em Massa"],
         img: "prensa.png"
     },
     { 
-        ano: "1879", t: "A Era da Luz", cat: "Energia",
-        d: "Thomas Edison não inventou apenas a lâmpada, ele inventou o estilo de vida moderno.",
+        ano: "1879", 
+        titulo: "A Lâmpada Elétrica", 
+        desc: "Thomas Edison transformou a noite em dia. Esta invenção não apenas iluminou casas, mas permitiu que a indústria e a economia operassem 24 horas por dia, mudando o ritmo biológico da humanidade.",
+        detalhes: ["Economia 24h", "Segurança Urbana", "Revolução Industrial"],
         img: "lampada.png"
     },
     { 
-        ano: "1928", t: "O Milagre da Penicilina", cat: "Medicina",
-        d: "Alexander Fleming descobriu a arma definitiva contra as doenças, mudando nossa história.",
+        ano: "1928", 
+        titulo: "A Revolução da Penicilina", 
+        desc: "Antes de Alexander Fleming, uma simples ferida podia ser fatal. A penicilina abriu a era dos antibióticos, dobrando a expectativa de vida média do ser humano em apenas um século.",
+        detalhes: ["Aumento da Vida", "Cirurgias Seguras", "Combate a Pragas"],
         img: "penicilina.png"
     },
     { 
-        ano: "1969", t: "A Conquista da Lua", cat: "Exploração",
-        d: "O momento em que a Terra ficou pequena e o universo se tornou o nosso novo quintal.",
+        ano: "1969", 
+        titulo: "Apolo 11: A Lua", 
+        desc: "Pela primeira vez em bilhões de anos, a vida terrestre deixou o seu planeta de origem. Esta missão provou que a tecnologia humana não tem limites e uniu o mundo inteiro através das telas de TV.",
+        detalhes: ["Exploração Espacial", "Avanço de TI", "União Global"],
         img: "apollo.png"
     },
     { 
-        ano: "2023", t: "Singularidade da IA", cat: "Futuro",
-        d: "A inteligência artificial generativa redefine o que significa ser criativo e produtivo.",
+        ano: "2023", 
+        titulo: "IA Generativa", 
+        desc: "A inteligência artificial deixou de ser apenas processamento de dados para se tornar criativa. Estamos agora na fronteira onde máquinas podem escrever, desenhar e programar connosco.",
+        detalhes: ["Automação Criativa", "Novo Paradigma", "Eficiência Global"],
         img: "ia.png"
     }
 ];
 
 const container = document.getElementById('timeline');
-const clickSound = document.getElementById('click-sound');
 
 function render() {
     descobertas.forEach((item) => {
-        const card = document.createElement('section');
+        // Criar Divisória
+        const divider = document.createElement('div');
+        divider.className = 'timeline-divider';
+        divider.innerHTML = `<span>Março na História</span>`;
+        container.appendChild(divider);
+
+        // Criar Card
+        const card = document.createElement('div');
         card.className = 'card';
+        
+        const detalhesHtml = item.detalhes.map(d => `<div class="detail-item">${d}</div>`).join('');
+
         card.innerHTML = `
-            <div class="img-container">
-                <img src="${item.img}" alt="${item.t}">
+            <div class="card-image-box">
+                <img src="${item.img}" alt="${item.titulo}">
             </div>
-            <div class="card-content">
-                <span class="category">${item.cat} • ${item.ano}</span>
-                <h2>${item.t}</h2>
-                <p>${item.d}</p>
+            <div class="card-info">
+                <span class="year-badge">${item.ano}</span>
+                <h2>${item.titulo}</h2>
+                <p class="card-description">${item.desc}</p>
+                <div class="details-grid">
+                    ${detalhesHtml}
+                </div>
             </div>
         `;
-        
-        card.addEventListener('mouseenter', () => {
-            clickSound.currentTime = 0;
-            clickSound.volume = 0.2;
-            clickSound.play();
-        });
-
         container.appendChild(card);
     });
-
-    // Observer para animar os cards ao rolar
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('visible');
-            }
-        });
-    }, { threshold: 0.2 });
-
-    document.querySelectorAll('.card').forEach(card => observer.observe(card));
 }
 
-// Lógica da Barra de Progresso
 window.addEventListener('scroll', () => {
-    const winScroll = document.documentElement.scrollTop;
-    const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-    const scrolled = (winScroll / height) * 100;
-    document.getElementById("progress-bar").style.width = scrolled + "%";
+    const scrolled = (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100;
+    document.getElementById('progress-bar').style.width = scrolled + '%';
 });
 
 render();
