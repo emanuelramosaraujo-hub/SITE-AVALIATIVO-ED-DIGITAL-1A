@@ -1,84 +1,99 @@
-const descobertas = [
-    { 
-        ano: "-400k", 
-        titulo: "O Domínio do Fogo", 
-        desc: "A transição fundamental da nossa espécie. O fogo permitiu o cozimento de proteínas, o que acelerou o desenvolvimento do cérebro humano, além de criar o primeiro ambiente social ao redor das fogueiras.",
-        detalhes: ["Expansão Cerebral", "Segurança Noturna", "Socialização"],
-        img: "fogo.png" 
-    },
-    { 
-        ano: "1450", 
-        titulo: "A Prensa de Gutenberg", 
-        desc: "Johannes Gutenberg democratizou o acesso à Bíblia e aos clássicos, quebrando o monopólio da informação. Sem esta invenção, movimentos como a Ciência Moderna não teriam ocorrido tão rápido.",
-        detalhes: ["Fim do Monopólio", "Alfabetização", "Produção em Massa"],
-        img: "prensa.png"
-    },
-    { 
-        ano: "1879", 
-        titulo: "A Lâmpada Elétrica", 
-        desc: "Thomas Edison transformou a noite em dia. Esta invenção não apenas iluminou casas, mas permitiu que a indústria e a economia operassem 24 horas por dia, mudando o ritmo biológico da humanidade.",
-        detalhes: ["Economia 24h", "Segurança Urbana", "Revolução Industrial"],
-        img: "lampada.png"
-    },
-    { 
-        ano: "1928", 
-        titulo: "A Revolução da Penicilina", 
-        desc: "Antes de Alexander Fleming, uma simples ferida podia ser fatal. A penicilina abriu a era dos antibióticos, dobrando a expectativa de vida média do ser humano em apenas um século.",
-        detalhes: ["Aumento da Vida", "Cirurgias Seguras", "Combate a Pragas"],
-        img: "penicilina.png"
-    },
-    { 
-        ano: "1969", 
-        titulo: "Apolo 11: A Lua", 
-        desc: "Pela primeira vez em bilhões de anos, a vida terrestre deixou o seu planeta de origem. Esta missão provou que a tecnologia humana não tem limites e uniu o mundo inteiro através das telas de TV.",
-        detalhes: ["Exploração Espacial", "Avanço de TI", "União Global"],
-        img: "apollo.png"
-    },
-    { 
-        ano: "2023", 
-        titulo: "IA Generativa", 
-        desc: "A inteligência artificial deixou de ser apenas processamento de dados para se tornar criativa. Estamos agora na fronteira onde máquinas podem escrever, desenhar e programar connosco.",
-        detalhes: ["Automação Criativa", "Novo Paradigma", "Eficiência Global"],
-        img: "ia.png"
-    }
-];
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&family=Syncopate:wght@400;700&display=swap');
 
-const container = document.getElementById('timeline');
-
-function render() {
-    descobertas.forEach((item) => {
-        // Criar Divisória
-        const divider = document.createElement('div');
-        divider.className = 'timeline-divider';
-        divider.innerHTML = `<span>Março na História</span>`;
-        container.appendChild(divider);
-
-        // Criar Card
-        const card = document.createElement('div');
-        card.className = 'card';
-        
-        const detalhesHtml = item.detalhes.map(d => `<div class="detail-item">${d}</div>`).join('');
-
-        card.innerHTML = `
-            <div class="card-image-box">
-                <img src="${item.img}" alt="${item.titulo}">
-            </div>
-            <div class="card-info">
-                <span class="year-badge">${item.ano}</span>
-                <h2>${item.titulo}</h2>
-                <p class="card-description">${item.desc}</p>
-                <div class="details-grid">
-                    ${detalhesHtml}
-                </div>
-            </div>
-        `;
-        container.appendChild(card);
-    });
+:root {
+    --bg: #000;
+    --accent: #00f2ff;
+    --glass: rgba(255, 255, 255, 0.03);
+    --border: rgba(255, 255, 255, 0.1);
 }
 
-window.addEventListener('scroll', () => {
-    const scrolled = (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100;
-    document.getElementById('progress-bar').style.width = scrolled + '%';
-});
+* { box-sizing: border-box; }
 
-render();
+body {
+    background: var(--bg);
+    color: #fff;
+    font-family: 'Space Grotesk', sans-serif;
+    margin: 0;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+}
+
+/* Loader */
+#loader {
+    position: fixed; inset: 0; background: #000; z-index: 10000;
+    display: flex; flex-direction: column; justify-content: center; align-items: center;
+    transition: 1s ease-in-out;
+}
+.spinner {
+    width: 50px; height: 50px; border: 3px solid var(--accent);
+    border-top-color: transparent; border-radius: 50%;
+    animation: spin 1s linear infinite; margin-bottom: 20px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Hero Section */
+.hero {
+    height: 100vh; display: flex; align-items: center; justify-content: center;
+    position: relative; overflow: hidden;
+}
+.bg-vignette {
+    position: absolute; inset: 0;
+    background: radial-gradient(circle, transparent 20%, #000 90%);
+    z-index: 1;
+}
+.hero-content { z-index: 2; text-align: center; }
+.pre-title { letter-spacing: 5px; color: var(--accent); font-size: 0.8rem; text-transform: uppercase; }
+.main-title {
+    font-family: 'Syncopate', sans-serif; font-size: clamp(3rem, 15vw, 10rem);
+    margin: 20px 0; font-weight: 700; letter-spacing: -2px;
+    background: linear-gradient(to bottom, #fff, #444);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+
+/* Timeline Layout */
+.section-card {
+    min-height: 100vh; display: flex; align-items: center; justify-content: center;
+    padding: 100px 5%; position: relative;
+}
+
+.card-inner {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 80px;
+    max-width: 1200px; width: 100%; align-items: center;
+}
+
+.img-box {
+    position: relative; border-radius: 40px; overflow: hidden;
+    border: 1px solid var(--border); transition: 0.8s cubic-bezier(0.2, 1, 0.3, 1);
+}
+.img-box img { 
+    width: 100%; height: 500px; object-fit: contain; background: #080808; 
+    transition: 1.2s;
+}
+
+.info-box { position: relative; }
+.year-tag { font-family: 'Syncopate'; color: var(--accent); font-size: 2rem; margin-bottom: 10px; display: block; }
+h2 { font-size: 3.5rem; margin: 10px 0; font-weight: 700; line-height: 1; }
+p { font-size: 1.2rem; color: #aaa; line-height: 1.8; }
+
+.features {
+    display: flex; gap: 15px; margin-top: 30px;
+}
+.feat {
+    padding: 8px 18px; background: var(--glass); border: 1px solid var(--border);
+    border-radius: 12px; font-size: 0.8rem; color: var(--accent);
+}
+
+/* Scroll Progress */
+#scroll-progress {
+    position: fixed; top: 0; left: 0; width: 0%; height: 4px;
+    background: var(--accent); z-index: 9999; box-shadow: 0 0 20px var(--accent);
+}
+
+/* Animations */
+.reveal { opacity: 0; transform: translateY(80px); transition: 1s all ease-out; }
+.reveal.active { opacity: 1; transform: translateY(0); }
+
+@media (max-width: 900px) {
+    .card-inner { grid-template-columns: 1fr; text-align: center; gap: 40px; }
+    .img-box img { height: 300px; }
+}
