@@ -1,107 +1,81 @@
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;700&display=swap');
+const descobertas = [
+    { 
+        ano: "≈ 400.000 a.C.", t: "O Despertar do Fogo", cat: "Evolução Humana",
+        d: "Mais que calor, o fogo trouxe o cozimento, a luz e a união das tribos ao redor das chamas.",
+        img: "fogo.png" 
+    },
+    { 
+        ano: "1450", t: "A Prensa de Gutenberg", cat: "Conhecimento",
+        d: "A primeira grande revolução da informação. O mundo nunca mais ficaria em silêncio.",
+        img: "prensa.png"
+    },
+    { 
+        ano: "1879", t: "A Era da Luz", cat: "Energia",
+        d: "Thomas Edison não inventou apenas a lâmpada, ele inventou o estilo de vida moderno.",
+        img: "lampada.png"
+    },
+    { 
+        ano: "1928", t: "O Milagre da Penicilina", cat: "Medicina",
+        d: "Alexander Fleming descobriu a arma definitiva contra as doenças, mudando nossa história.",
+        img: "penicilina.png"
+    },
+    { 
+        ano: "1969", t: "A Conquista da Lua", cat: "Exploração",
+        d: "O momento em que a Terra ficou pequena e o universo se tornou o nosso novo quintal.",
+        img: "apollo.png"
+    },
+    { 
+        ano: "2023", t: "Singularidade da IA", cat: "Futuro",
+        d: "A inteligência artificial generativa redefine o que significa ser criativo e produtivo.",
+        img: "ia.png"
+    }
+];
 
-:root {
-    --bg: #030712;
-    --card-bg: rgba(17, 24, 39, 0.7);
-    --accent: #38bdf8;
-    --accent-glow: rgba(56, 189, 248, 0.4);
-    --text: #f9fafb;
+const container = document.getElementById('timeline');
+const clickSound = document.getElementById('click-sound');
+
+function render() {
+    descobertas.forEach((item) => {
+        const card = document.createElement('section');
+        card.className = 'card';
+        card.innerHTML = `
+            <div class="img-container">
+                <img src="${item.img}" alt="${item.t}">
+            </div>
+            <div class="card-content">
+                <span class="category">${item.cat} • ${item.ano}</span>
+                <h2>${item.t}</h2>
+                <p>${item.d}</p>
+            </div>
+        `;
+        
+        card.addEventListener('mouseenter', () => {
+            clickSound.currentTime = 0;
+            clickSound.volume = 0.2;
+            clickSound.play();
+        });
+
+        container.appendChild(card);
+    });
+
+    // Observer para animar os cards ao rolar
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            }
+        });
+    }, { threshold: 0.2 });
+
+    document.querySelectorAll('.card').forEach(card => observer.observe(card));
 }
 
-body {
-    background-color: var(--bg);
-    color: var(--text);
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    margin: 0;
-    overflow-x: hidden;
-}
+// Lógica da Barra de Progresso
+window.addEventListener('scroll', () => {
+    const winScroll = document.documentElement.scrollTop;
+    const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    const scrolled = (winScroll / height) * 100;
+    document.getElementById("progress-bar").style.width = scrolled + "%";
+});
 
-/* Fundo com efeito de luz suave */
-body::before {
-    content: "";
-    position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background: radial-gradient(circle at 50% -20%, #1e293b, transparent);
-    z-index: -1;
-}
-
-header {
-    padding: 100px 20px;
-    text-align: center;
-}
-
-h1 {
-    font-size: clamp(2.5rem, 8vw, 4rem);
-    font-weight: 800;
-    background: linear-gradient(to right, #fff, var(--accent), #fff);
-    background-size: 200% auto;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    animation: shine 5s linear infinite;
-}
-
-@keyframes shine { to { background-position: 200% center; } }
-
-.timeline {
-    max-width: 800px;
-    margin: 0 auto 100px;
-    padding: 0 20px;
-    border-left: 2px solid rgba(56, 189, 248, 0.2);
-}
-
-.card {
-    background: var(--card-bg);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 24px;
-    padding: 30px;
-    margin-bottom: 50px;
-    margin-left: 30px;
-    transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
-    position: relative;
-}
-
-.card:hover {
-    transform: translateY(-10px) scale(1.01);
-    border-color: var(--accent);
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-}
-
-/* Ajuste das Imagens para NÃO CORTAR */
-.card img {
-    width: 100%;
-    height: auto; /* Deixa a altura livre para não cortar */
-    max-height: 350px; /* Limite para não ficar gigante */
-    object-fit: contain; /* Garante que a imagem inteira apareça */
-    background: rgba(0,0,0,0.2);
-    border-radius: 16px;
-    margin: 20px 0;
-    transition: 0.5s;
-}
-
-.category-tag {
-    color: var(--accent);
-    font-size: 0.75rem;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-}
-
-.topics-list {
-    list-style: none;
-    padding: 0; margin: 20px 0 0;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 10px;
-}
-
-.topics-list li {
-    font-size: 0.85rem;
-    background: rgba(255,255,255,0.05);
-    padding: 8px 12px;
-    border-radius: 8px;
-    color: #94a3b8;
-}
-
-.card:hover .topics-list li { color: #fff; background: rgba(56, 189, 248, 0.1); }
+render();
