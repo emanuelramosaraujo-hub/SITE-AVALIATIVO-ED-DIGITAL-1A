@@ -1,42 +1,21 @@
-body {
-    font-family: 'Segoe UI', sans-serif;
-    background-color: #0f172a;
-    color: white;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
+const dados = [
+    { a: "-3500", t: "A Roda", d: "Revolucionou tudo!" },
+    { a: "1928", t: "Penicilina", d: "Salvou bilhões de pessoas." },
+    { a: "1969", t: "Lua", d: "O grande salto da humanidade." }
+];
 
-header {
-    padding: 60px 20px;
-    text-align: center;
-    background: linear-gradient(135deg, #1e293b, #0f172a);
-    width: 100%;
-}
+const container = document.getElementById('timeline');
+const som = document.getElementById('click-sound');
 
-.container {
-    max-width: 800px;
-    margin: 20px;
-    border-left: 4px solid #38bdf8;
-    padding-left: 20px;
-}
-
-.card {
-    background: #1e293b;
-    margin: 20px 0;
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-    transition: transform 0.3s, background 0.3s;
-    cursor: pointer;
-    border: 1px solid #334155;
-}
-
-.card:hover {
-    transform: scale(1.05);
-    background: #334155;
-    border-color: #38bdf8;
-}
-
-h2 { color: #38bdf8; margin-top: 0; }
+dados.forEach(item => {
+    const div = document.createElement('div');
+    div.className = 'card';
+    div.innerHTML = `<span>${item.a}</span><h2>${item.t}</h2><p>${item.d}</p>`;
+    
+    div.onclick = () => {
+        som.currentTime = 0;
+        som.play(); // ISSO FAZ O SOM FUNCIONAR
+    };
+    
+    container.appendChild(div);
+});
