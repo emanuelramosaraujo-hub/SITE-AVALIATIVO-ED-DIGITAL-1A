@@ -1,83 +1,49 @@
 const timelineData = [
-    { 
-        ano: "≈ 400.000 a.C.", 
-        titulo: "Domínio do Fogo", 
-        desc: "A base da evolução humana. O fogo permitiu o cozimento de alimentos e a proteção contra predadores, acelerando o desenvolvimento do cérebro.", 
-        img: "fogo.png" 
-    },
-    { 
-        ano: "1450", 
-        titulo: "Prensa de Gutenberg", 
-        desc: "A revolução do conhecimento. A imprensa permitiu a produção em massa de livros, democratizando a informação e a ciência.", 
-        img: "prensa.png" 
-    },
-    { 
-        ano: "1879", 
-        titulo: "Lâmpada Elétrica", 
-        desc: "A conquista da luz. Thomas Edison mudou o ritmo do mundo, permitindo a produtividade noturna e a segurança urbana.", 
-        img: "lampada.png" 
-    },
-    { 
-        ano: "1928", 
-        titulo: "Penicilina", 
-        desc: "O milagre da medicina. A descoberta dos antibióticos dobrou a expectativa de vida humana e erradicou doenças fatais.", 
-        img: "penicilina.png" 
-    },
-    { 
-        ano: "1969", 
-        titulo: "Apolo 11", 
-        desc: "O salto gigante da humanidade. O momento em que o Homem provou que o seu destino não está limitado apenas à Terra.", 
-        img: "apollo.png" 
-    },
-    { 
-        ano: "2023", 
-        titulo: "Era da IA", 
-        desc: "A nova fronteira digital. A inteligência artificial redefine a criatividade, a tecnologia e a forma como interagimos com o mundo.", 
-        img: "ia.png" 
-    }
+    { n: "01", ano: "≈ 400.000 a.C.", t: "Domínio do Fogo", d: "A primeira tecnologia disruptiva. O fogo alterou a biologia humana e permitiu a expansão do pensamento abstrato ao redor das chamas.", img: "fogo.png" },
+    { n: "02", ano: "1450", t: "Prensa de Gutenberg", d: "A democratização total do saber. O código escrito tornou-se a primeira rede social da história, conectando mentes através dos séculos.", img: "prensa.png" },
+    { n: "03", ano: "1879", t: "Lâmpada Elétrica", d: "O controle sobre o tempo. A luz artificial removeu as barreiras solares da produtividade, criando a civilização urbana moderna.", img: "lampada.png" },
+    { n: "04", ano: "1928", t: "Penicilina", d: "A bio-revolução. Pela primeira vez, a humanidade dominou as ameaças invisíveis, redefinindo o conceito de longevidade.", img: "penicilina.png" },
+    { n: "05", ano: "1969", t: "Apolo 11", d: "O êxodo planetário. O momento em que a Terra deixou de ser o único limite para a exploração da consciência e da tecnologia.", img: "apollo.png" },
+    { n: "06", ano: "2026", t: "Era da IA Híbrida", d: "A simbiose perfeita. A inteligência artificial funde-se com a criatividade humana para criar um novo paradigma de realidade.", img: "ia.png" }
 ];
 
-const main = document.getElementById('timeline-v2');
+const container = document.getElementById('timeline-container');
 
-function buildTimeline() {
-    timelineData.forEach((item, index) => {
+function init() {
+    timelineData.forEach((item) => {
         const section = document.createElement('section');
-        section.className = 'section-card';
+        section.className = 't-section';
         section.innerHTML = `
-            <div class="card-inner">
-                <div class="img-box reveal"><img src="${item.img}" alt="${item.titulo}"></div>
-                <div class="info-box reveal">
-                    <span class="year-tag">${item.ano}</span>
-                    <h2>${item.titulo}</h2>
-                    <p>${item.desc}</p>
-                </div>
+            <div class="t-image-wrap">
+                <img src="${item.img}" alt="${item.t}">
+            </div>
+            <div class="t-content">
+                <span class="t-number">${item.n} / 06</span>
+                <div class="t-year">${item.ano}</div>
+                <h2 class="t-title">${item.t}</h2>
+                <p class="t-desc">${item.d}</p>
             </div>
         `;
-        main.appendChild(section);
+        container.appendChild(section);
     });
 
-    // Remove a tela de carregamento após 2 segundos
-    setTimeout(() => {
+    // Fade out Loader com precisão
+    window.addEventListener('load', () => {
         const loader = document.getElementById('loader');
-        if(loader) {
-            loader.style.opacity = '0';
-            setTimeout(() => loader.remove(), 1000);
-        }
-    }, 2000);
+        loader.style.opacity = '0';
+        setTimeout(() => loader.style.display = 'none', 1200);
+    });
 }
 
-// Lógica de Scroll e Revelação
+// Parallax Suave nas Imagens
 window.addEventListener('scroll', () => {
-    const reveals = document.querySelectorAll('.reveal');
-    reveals.forEach(el => {
-        const windowHeight = window.innerHeight;
-        const revealTop = el.getBoundingClientRect().top;
-        if (revealTop < windowHeight - 100) el.classList.add('active');
+    const images = document.querySelectorAll('.t-image-wrap img');
+    images.forEach(img => {
+        const speed = 0.15;
+        const rect = img.parentElement.getBoundingClientRect();
+        const yPos = -(rect.top * speed);
+        img.style.transform = `translateY(${yPos}px) scale(1.1)`;
     });
-    
-    const winScroll = document.documentElement.scrollTop;
-    const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-    document.getElementById('scroll-progress').style.width = (winScroll / height) * 100 + "%";
 });
 
-buildTimeline();
+init();
