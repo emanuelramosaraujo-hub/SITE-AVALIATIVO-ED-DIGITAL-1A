@@ -1,74 +1,86 @@
-// --- GESTÃO DE DADOS (ARRAY DE OBJETOS) ---
-const historyData = [
-    { t: "Domínio do Fogo", d: "Energia térmica e cozimento proteico.", tags: "400k a.C.", img: "fogo.png" },
-    { t: "Prensa de Gutenberg", d: "Serialização da informação escrita.", tags: "1450", img: "prensa.png" },
-    { t: "Lâmpada Elétrica", d: "Eletrificação e controle da noite.", tags: "1879", img: "lampada.png" },
-    { t: "Era da IA", d: "Sistemas neurais e processamento generativo.", tags: "2026", img: "ia.png" }
+/* --- GESTÃO DE DADOS DINÂMICOS --- */
+const discoveries = [
+    { title: "Domínio do Fogo", desc: "A base da civilização. Permitiu a evolução cerebral e proteção.", year: "400.000 a.C." },
+    { title: "Prensa Móvel", desc: "A primeira revolução da informação global.", year: "1450" },
+    { title: "Lâmpada Incandescente", desc: "O fim da dependência do ciclo solar.", year: "1879" },
+    { title: "Penicilina", desc: "A era da biotecnologia salvando bilhões.", year: "1928" },
+    { title: "Internet (WWW)", desc: "A conexão total da consciência humana.", year: "1989" },
+    { title: "IA Generativa", desc: "A singularidade técnica e criativa de 2026.", year: "2026" }
 ];
 
-const faqData = [
-    { q: "Qual o impacto do Fogo?", a: "Permitiu o desenvolvimento cerebral através do cozimento de carnes." },
-    { q: "Por que 2026?", a: "O ano da convergência entre IA e consciência humana." }
+const faq = [
+    { q: "Qual o objetivo deste site?", a: "Demonstrar a união entre design futurista e acessibilidade inclusiva para 2026." },
+    { q: "Como o Alto Contraste funciona?", a: "Ele altera as variáveis CSS globais para garantir legibilidade máxima conforme normas WCAG." }
 ];
 
-// --- RENDERIZAÇÃO DINÂMICA ---
-function renderApp() {
-    const grid = document.getElementById('dynamic-grid');
-    const accordion = document.getElementById('accordion-container');
+/* --- RENDERIZAÇÃO --- */
+function init() {
+    const grid = document.getElementById('timeline-grid');
+    const accordionRoot = document.getElementById('accordion-root');
 
-    // Injetar Cards
-    grid.innerHTML = historyData.map(item => `
+    // Renderizar Cards
+    grid.innerHTML = discoveries.map(item => `
         <article class="card">
-            <span class="era-tag">${item.tags}</span>
-            <h3>${item.t}</h3>
-            <p>${item.d}</p>
+            <span style="color: var(--primary); font-weight: bold;">${item.year}</span>
+            <h3 style="margin: 1rem 0;">${item.title}</h3>
+            <p style="color: var(--text-low);">${item.desc}</p>
         </article>
     `).join('');
 
-    // Injetar Acordeão
-    accordion.innerHTML = faqData.map((item, i) => `
+    // Renderizar Accordions
+    accordionRoot.innerHTML = faq.map((item, index) => `
         <div class="accordion-item">
-            <button class="accordion-trigger" aria-expanded="false" onclick="toggleAccordion(${i})">
-                ${item.q}
+            <button class="accordion-trigger" aria-expanded="false" onclick="toggleAccordion(${index})">
+                ${item.q} <span>+</span>
             </button>
-            <div class="accordion-content" id="content-${i}">
+            <div class="accordion-content" id="faq-${index}">
                 <p>${item.a}</p>
             </div>
         </div>
     `).join('');
 }
 
-// --- ACESSIBILIDADE: TAMANHO DA FONTE ---
-let currentFontSize = 1;
-function changeFontSize(action) {
-    currentFontSize += action === 'increase' ? 0.1 : -0.1;
-    document.documentElement.style.setProperty('--font-base', `${currentFontSize}rem`);
+/* --- ACESSIBILIDADE: FONTE DINÂMICA --- */
+let baseFontSize = 1.0;
+function fontResizer(action) {
+    baseFontSize += (action === 'increase' ? 0.1 : -0.1);
+    document.documentElement.style.setProperty('--font-size', `${baseFontSize}rem`);
 }
 
-// --- CONTRASTE ---
-document.getElementById('contrast-toggle').addEventListener('click', () => {
+/* --- MODO CONTRASTE --- */
+document.getElementById('contrast-btn').addEventListener('click', () => {
     document.body.classList.toggle('high-contrast');
 });
 
-// --- COMPONENTES: ACORDEÃO ---
-function toggleAccordion(index) {
+/* --- LÓGICA ACORDEÃO --- */
+function toggleAccordion(idx) {
     const contents = document.querySelectorAll('.accordion-content');
     const triggers = document.querySelectorAll('.accordion-trigger');
     
-    contents[index].classList.toggle('open');
-    const isOpen = contents[index].classList.contains('open');
-    triggers[index].setAttribute('aria-expanded', isOpen);
+    const isActive = contents[idx].classList.contains('active');
+    
+    // Fecha todos antes de abrir o selecionado
+    contents.forEach(c => c.classList.remove('active'));
+    triggers.forEach(t => t.setAttribute('aria-expanded', 'false'));
+
+    if (!isActive) {
+        contents[idx].classList.add('active');
+        triggers[idx].setAttribute('aria-expanded', 'true');
+    }
 }
 
-// --- SCROLL REVEAL (INTERSECTION OBSERVER) ---
-const observer = new IntersectionObserver((entries) => {
+/* --- SCROLL REVEAL (INTERSECTION OBSERVER) --- */
+const revealObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
-        if (entry.isIntersecting) entry.target.classList.add('reveal');
+        if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+        }
     });
-}, { threshold: 0.1 });
+}, { threshold: 0.15 });
 
-// Inicialização
+// Inicialização total
 document.addEventListener('DOMContentLoaded', () => {
-    renderApp();
-    document.querySelectorAll('.card').forEach(card => observer.observe(card));
+    init();
+    // Observar cards após renderização
+    document.querySelectorAll('.card, .reveal').forEach(el => revealObserver.observe(el));
 });
