@@ -1,49 +1,73 @@
-const timelineData = [
-    { n: "01", ano: "≈ 400.000 a.C.", t: "Domínio do Fogo", d: "A primeira tecnologia disruptiva. O fogo alterou a biologia humana e permitiu a expansão do pensamento abstrato ao redor das chamas.", img: "fogo.png" },
-    { n: "02", ano: "1450", t: "Prensa de Gutenberg", d: "A democratização total do saber. O código escrito tornou-se a primeira rede social da história, conectando mentes através dos séculos.", img: "prensa.png" },
-    { n: "03", ano: "1879", t: "Lâmpada Elétrica", d: "O controle sobre o tempo. A luz artificial removeu as barreiras solares da produtividade, criando a civilização urbana moderna.", img: "lampada.png" },
-    { n: "04", ano: "1928", t: "Penicilina", d: "A bio-revolução. Pela primeira vez, a humanidade dominou as ameaças invisíveis, redefinindo o conceito de longevidade.", img: "penicilina.png" },
-    { n: "05", ano: "1969", t: "Apolo 11", d: "O êxodo planetário. O momento em que a Terra deixou de ser o único limite para a exploração da consciência e da tecnologia.", img: "apollo.png" },
-    { n: "06", ano: "2026", t: "Era da IA Híbrida", d: "A simbiose perfeita. A inteligência artificial funde-se com a criatividade humana para criar um novo paradigma de realidade.", img: "ia.png" }
-];
+@import url('https://fonts.googleapis.com/css2?family=Uncut+Sans:wght@300;500;700;800&display=swap');
 
-const container = document.getElementById('timeline-container');
-
-function init() {
-    timelineData.forEach((item) => {
-        const section = document.createElement('section');
-        section.className = 't-section';
-        section.innerHTML = `
-            <div class="t-image-wrap">
-                <img src="${item.img}" alt="${item.t}">
-            </div>
-            <div class="t-content">
-                <span class="t-number">${item.n} / 06</span>
-                <div class="t-year">${item.ano}</div>
-                <h2 class="t-title">${item.t}</h2>
-                <p class="t-desc">${item.d}</p>
-            </div>
-        `;
-        container.appendChild(section);
-    });
-
-    // Fade out Loader com precisão
-    window.addEventListener('load', () => {
-        const loader = document.getElementById('loader');
-        loader.style.opacity = '0';
-        setTimeout(() => loader.style.display = 'none', 1200);
-    });
+:root {
+    --bg: #050505;
+    --accent: #fff;
+    --primary: #3d3d3d;
+    --glow: rgba(255, 255, 255, 0.15);
 }
 
-// Parallax Suave nas Imagens
-window.addEventListener('scroll', () => {
-    const images = document.querySelectorAll('.t-image-wrap img');
-    images.forEach(img => {
-        const speed = 0.15;
-        const rect = img.parentElement.getBoundingClientRect();
-        const yPos = -(rect.top * speed);
-        img.style.transform = `translateY(${yPos}px) scale(1.1)`;
-    });
-});
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
-init();
+body {
+    background-color: var(--bg);
+    color: var(--accent);
+    font-family: 'Uncut Sans', sans-serif;
+    overflow-x: hidden;
+    line-height: 1.2;
+}
+
+/* Efeito de Cinema */
+.grain {
+    position: fixed; inset: 0; z-index: 9999; pointer-events: none;
+    background-image: url("https://grainy-gradients.vercel.app/noise.svg");
+    opacity: 0.04;
+}
+
+/* Loader Estilo Matrix */
+#loader {
+    position: fixed; inset: 0; background: #000; z-index: 10000;
+    display: flex; justify-content: center; align-items: center; transition: 1.2s cubic-bezier(0.9, 0, 0.1, 1);
+}
+.load-text { letter-spacing: 5px; font-size: 0.6rem; opacity: 0.5; }
+
+/* Hero Modernista */
+.hero-v3 {
+    height: 100vh; display: flex; flex-direction: column; justify-content: center; padding: 0 10%;
+    position: relative; border-bottom: 1px solid var(--primary);
+}
+.title-reveal {
+    font-size: clamp(5rem, 20vw, 15rem); font-weight: 800; letter-spacing: -0.05em;
+    line-height: 0.8; margin-bottom: 20px;
+}
+.status-bar { font-size: 0.7rem; letter-spacing: 2px; margin-bottom: 20px; color: #555; }
+
+/* Timeline Sections */
+.t-section {
+    min-height: 100vh; padding: 100px 10%; display: grid; grid-template-columns: 1fr 1fr;
+    align-items: center; gap: 50px; position: relative; border-bottom: 1px solid var(--primary);
+}
+
+.t-image-wrap {
+    position: sticky; top: 15vh; height: 70vh; width: 100%;
+    overflow: hidden; border-radius: 4px; filter: grayscale(1); transition: 1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.t-section:hover .t-image-wrap { filter: grayscale(0); }
+
+.t-image-wrap img { width: 100%; height: 100%; object-fit: cover; transition: 1.5s; }
+
+.t-content { padding: 40px 0; }
+.t-number { font-size: 0.8rem; font-weight: 700; opacity: 0.3; margin-bottom: 20px; display: block; }
+.t-year { font-size: 2rem; margin-bottom: 10px; color: #888; }
+.t-title { font-size: clamp(3rem, 8vw, 6rem); font-weight: 700; margin-bottom: 30px; letter-spacing: -0.02em; }
+.t-desc { font-size: 1.2rem; color: #ccc; max-width: 400px; line-height: 1.6; font-weight: 300; }
+
+/* Micro-interações */
+.t-section:nth-child(even) { direction: rtl; }
+.t-section:nth-child(even) .t-content { direction: ltr; }
+
+@media (max-width: 900px) {
+    .t-section { grid-template-columns: 1fr; height: auto; }
+    .t-image-wrap { position: relative; height: 300px; top: 0; }
+    .title-reveal { font-size: 5rem; }
+}
