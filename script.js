@@ -1,48 +1,56 @@
-const timelineData = [
-    { n: "01", ano: "≈ 400.000 a.C.", t: "Domínio do Fogo", d: "A primeira tecnologia disruptiva. O fogo alterou a biologia humana e permitiu a expansão do pensamento abstrato ao redor das chamas.", img: "fogo.png" },
-    { n: "02", ano: "1450", t: "Prensa de Gutenberg", d: "A democratização total do saber. O código escrito tornou-se a primeira rede social da história, conectando mentes através dos séculos.", img: "prensa.png" },
-    { n: "03", ano: "1879", t: "Lâmpada Elétrica", d: "O controle sobre o tempo. A luz artificial removeu as barreiras solares da produtividade, criando a civilização urbana moderna.", img: "lampada.png" },
-    { n: "04", ano: "1928", t: "Penicilina", d: "A bio-revolução. Pela primeira vez, a humanidade dominou as ameaças invisíveis, redefinindo o conceito de longevidade.", img: "penicilina.png" },
-    { n: "05", ano: "1969", t: "Apolo 11", d: "O êxodo planetário. O momento em que a Terra deixou de ser o único limite para a exploração da consciência e da tecnologia.", img: "apollo.png" },
-    { n: "06", ano: "2026", t: "Era da IA Híbrida", d: "A simbiose perfeita. A inteligência artificial funde-se com a criatividade humana para criar um novo paradigma de realidade.", img: "ia.png" }
+const epochs = [
+    { id: "01", ano: "400.000 a.C.", t: "FOGO", d: "A primeira faísca da inteligência. O fogo moldou o nosso corpo e permitiu-nos conquistar a escuridão.", img: "fogo.png" },
+    { id: "02", ano: "1450", t: "PRENSA", d: "A rede social original. Gutenberg criou o sistema que permitiu à humanidade partilhar o pensamento em massa.", img: "prensa.png" },
+    { id: "03", ano: "1879", t: "LUZ", d: "A industrialização da noite. Thomas Edison deu à espécie humana o poder de ignorar o sol.", img: "lampada.png" },
+    { id: "04", ano: "1928", t: "CURA", d: "O domínio sobre o invisível. A penicilina transformou a morte certa numa simples memória do passado.", img: "penicilina.png" },
+    { id: "05", ano: "1969", t: "ASTRO", d: "A fuga da gravidade. Quando pisámos na lua, o universo deixou de ser um mistério para se tornar um destino.", img: "apollo.png" },
+    { id: "06", ano: "2026", t: "NEURAL", d: "A era da inteligência sintética. Onde o código e a consciência começam a tornar-se um só.", img: "ia.png" }
 ];
 
-const container = document.getElementById('timeline-container');
+const engine = document.getElementById('chronos-engine');
+const cursor = document.getElementById('cursor');
+
+// Custom Mouse Logic
+document.addEventListener('mousemove', (e) => {
+    cursor.style.left = e.clientX + 'px';
+    cursor.style.top = e.clientY + 'px';
+});
 
 function init() {
-    timelineData.forEach((item) => {
-        const section = document.createElement('section');
-        section.className = 't-section';
-        section.innerHTML = `
-            <div class="t-image-wrap">
-                <img src="${item.img}" alt="${item.t}">
-            </div>
-            <div class="t-content">
-                <span class="t-number">${item.n} / 06</span>
-                <div class="t-year">${item.ano}</div>
-                <h2 class="t-title">${item.t}</h2>
-                <p class="t-desc">${item.d}</p>
+    epochs.forEach(item => {
+        const div = document.createElement('section');
+        div.className = 'epoch-block';
+        div.innerHTML = `
+            <div class="epoch-card">
+                <div class="epoch-visual">
+                    <img src="${item.img}" alt="${item.t}">
+                </div>
+                <div class="epoch-info">
+                    <h3>${item.id} // ${item.ano}</h3>
+                    <h2>${item.t}</h2>
+                    <p>${item.d}</p>
+                </div>
             </div>
         `;
-        container.appendChild(section);
+        engine.appendChild(div);
     });
 
-    // Fade out Loader com precisão
-    window.addEventListener('load', () => {
+    setTimeout(() => {
         const loader = document.getElementById('loader');
         loader.style.opacity = '0';
-        setTimeout(() => loader.style.display = 'none', 1200);
-    });
+        setTimeout(() => loader.remove(), 1000);
+    }, 2500);
 }
 
-// Parallax Suave nas Imagens
+// Reveal on Scroll
 window.addEventListener('scroll', () => {
-    const images = document.querySelectorAll('.t-image-wrap img');
-    images.forEach(img => {
-        const speed = 0.15;
-        const rect = img.parentElement.getBoundingClientRect();
-        const yPos = -(rect.top * speed);
-        img.style.transform = `translateY(${yPos}px) scale(1.1)`;
+    const blocks = document.querySelectorAll('.epoch-block');
+    blocks.forEach(block => {
+        const top = block.getBoundingClientRect().top;
+        if (top < window.innerHeight * 0.7) {
+            block.style.opacity = '1';
+            block.style.transform = 'translateY(0)';
+        }
     });
 });
 
