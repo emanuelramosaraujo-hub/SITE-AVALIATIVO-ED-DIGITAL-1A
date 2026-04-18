@@ -1,68 +1,86 @@
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;700&family=Bebas+Neue&family=Outfit:wght@100;400;900&display=swap');
+const historyData = [
+    {
+        id: "ARCH-01", t: "Fogo", ano: "400.000 a.C.",
+        d: "O domínio da combustão química foi o primeiro 'hack' biológico. Permitiu a digestão externa (cozimento), liberando energia para o crescimento neocortical e estabelecendo o conceito de 'lar'.",
+        tags: ["Termodinâmica", "Evolução", "Bio-Hack"], img: "fogo.png"
+    },
+    {
+        id: "ARCH-02", t: "Prensa", ano: "1450",
+        d: "A serialização do pensamento. Gutenberg transformou a sabedoria subjetiva em dados objetivos e replicáveis, dando início ao processamento de informações em larga escala na Europa.",
+        tags: ["Dados", "Replicação", "Saber"], img: "prensa.png"
+    },
+    {
+        id: "ARCH-03", t: "Luz", ano: "1879",
+        d: "A eletrificação da realidade. Ao desvincular a atividade humana do ciclo solar, a lâmpada criou a infraestrutura para a economia global ininterrupta.",
+        tags: ["Fotónica", "Indústria", "Fluxo"], img: "lampada.png"
+    },
+    {
+        id: "ARCH-04", t: "Cura", ano: "1928",
+        d: "A descoberta do erro biológico. A penicilina foi o primeiro patch de correção para infecções bacterianas, estendendo o tempo de execução (tempo de vida) da espécie humana.",
+        tags: ["Medicina", "Patch", "Sintético"], img: "penicilina.png"
+    },
+    {
+        id: "ARCH-05", t: "Espaço", ano: "1969",
+        d: "O escape da biosfera. O programa Apollo provou que a consciência humana pode operar fora dos limites atmosféricos originais, iniciando a era multiplanetária.",
+        tags: ["Física", "Exploração", "Cosmos"], img: "apollo.png"
+    },
+    {
+        id: "ARCH-06", t: "IA", ano: "2026",
+        d: "A convergência absoluta. A IA Generativa e os sistemas neurais fundem-se, criando uma inteligência coletiva capaz de processar toda a história humana em milissegundos.",
+        tags: ["Singularidade", "Neural", "Futuro"], img: "ia.png"
+    }
+];
 
-:root {
-    --bg: #000;
-    --primary: #fff;
-    --accent: #00e5ff;
-    --glass: rgba(255, 255, 255, 0.02);
-    --border: rgba(255, 255, 255, 0.08);
+const ultraEngine = document.getElementById('ultra-engine');
+const glow = document.getElementById('cursor-glow');
+
+// Seguimento do Mouse High-End
+document.addEventListener('mousemove', (e) => {
+    glow.style.left = e.clientX + 'px';
+    glow.style.top = e.clientY + 'px';
+});
+
+function createSections() {
+    historyData.forEach((item, index) => {
+        const section = document.createElement('section');
+        section.className = 'era-section';
+        section.id = `era-${index}`;
+        
+        section.innerHTML = `
+            <div class="era-card">
+                <div class="era-visual">
+                    <img src="${item.img}" alt="${item.t}">
+                </div>
+                <div class="era-content">
+                    <span class="era-id">${item.id} // ${item.ano}</span>
+                    <h2 class="era-title">${item.t}</h2>
+                    <p class="era-text">${item.d}</p>
+                    <div class="era-tags">
+                        ${item.tags.map(t => `<span class="tag">${t}</span>`).join('')}
+                    </div>
+                </div>
+            </div>
+        `;
+        ultraEngine.appendChild(section);
+    });
+
+    // Remove Loader
+    setTimeout(() => {
+        document.getElementById('loader').style.opacity = '0';
+        setTimeout(() => document.getElementById('loader').remove(), 1000);
+    }, 2600);
 }
 
-* { margin: 0; padding: 0; box-sizing: border-box; }
-body { background: var(--bg); color: var(--primary); font-family: 'Outfit', sans-serif; overflow-x: hidden; }
+// Lógica de Scroll "Sticky-Reveal"
+window.addEventListener('scroll', () => {
+    const sections = document.querySelectorAll('.era-section');
+    sections.forEach((sec, idx) => {
+        const rect = sec.getBoundingClientRect();
+        if(rect.top < window.innerHeight * 0.5) {
+            document.querySelectorAll('.nav-item').forEach(n => n.style.opacity = '0.2');
+            document.querySelector(`.nav-item[data-index="${idx}"]`).style.opacity = '1';
+        }
+    });
+});
 
-/* Efeito de Cursor de Luz */
-#cursor-glow {
-    position: fixed; width: 400px; height: 400px; background: radial-gradient(circle, rgba(0, 229, 255, 0.05) 0%, transparent 70%);
-    pointer-events: none; z-index: 1; transform: translate(-50%, -50%);
-}
-
-.grain { position: fixed; inset: 0; z-index: 999; background: url('https://grainy-gradients.vercel.app/noise.svg'); opacity: 0.05; pointer-events: none; }
-
-/* Loader Terminal */
-#loader {
-    position: fixed; inset: 0; background: #000; z-index: 10000;
-    display: flex; flex-direction: column; justify-content: center; align-items: center;
-}
-.terminal-text { font-family: monospace; font-size: 0.8rem; letter-spacing: 3px; margin-bottom: 20px; color: var(--accent); }
-.load-bar { width: 200px; height: 2px; background: #111; position: relative; }
-.load-bar .fill { position: absolute; height: 100%; background: var(--accent); width: 0; animation: loading 2.5s forwards; }
-@keyframes loading { to { width: 100%; } }
-
-/* Hero */
-.mega-hero { height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
-.hero-title { font-family: 'Bebas Neue', sans-serif; font-size: 20vw; line-height: 0.8; letter-spacing: -5px; }
-.hero-sub { margin-top: 40px; font-size: 0.9rem; opacity: 0.6; }
-
-/* HUD Nav */
-.hud-nav { position: fixed; right: 40px; top: 50%; transform: translateY(-50%); z-index: 100; display: flex; flex-direction: column; gap: 20px; }
-.nav-item { font-size: 0.7rem; font-weight: 900; opacity: 0.2; cursor: pointer; transition: 0.3s; }
-.nav-item:hover { opacity: 1; color: var(--accent); }
-
-/* Engine Card System */
-.era-section { min-height: 140vh; display: flex; align-items: center; justify-content: center; padding: 100px 8%; position: relative; }
-.era-card {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 100px; align-items: flex-start;
-    background: var(--glass); border: 1px solid var(--border); border-radius: 40px;
-    padding: 80px; backdrop-filter: blur(20px); width: 100%;
-}
-
-.era-visual { position: sticky; top: 100px; border-radius: 20px; overflow: hidden; height: 500px; }
-.era-visual img { width: 100%; height: 100%; object-fit: contain; background: #050505; transition: 1s transform; }
-
-.era-content { padding-top: 20px; }
-.era-id { font-family: monospace; color: var(--accent); font-size: 1rem; margin-bottom: 20px; display: block; }
-.era-title { font-size: 5rem; font-weight: 900; margin-bottom: 30px; line-height: 0.9; }
-.era-text { font-size: 1.3rem; color: #888; line-height: 1.8; margin-bottom: 40px; }
-
-.era-tags { display: flex; gap: 10px; flex-wrap: wrap; }
-.tag { padding: 6px 15px; border: 1px solid var(--border); border-radius: 50px; font-size: 0.7rem; color: #555; text-transform: uppercase; }
-
-/* Efeito Hover Ultra */
-.era-section:hover .era-visual img { transform: scale(1.05) rotate(1deg); }
-.era-section:hover .tag { border-color: var(--accent); color: var(--accent); }
-
-@media (max-width: 1000px) {
-    .era-card { grid-template-columns: 1fr; padding: 40px; gap: 40px; }
-    .era-visual { position: relative; top: 0; height: 350px; }
-}
+createSections();
