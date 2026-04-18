@@ -3,35 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CHRONOS | A Odisseia da Humanidade</title>
+    <title>CHRONOS | Digital Experience 2026</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <div class="grain"></div>
+
     <div id="loader">
-        <div class="spinner"></div>
-        <span>Sincronizando Linha do Tempo...</span>
+        <div class="loader-content">
+            <div class="circle"></div>
+            <span class="load-text">INICIALIZANDO SISTEMA...</span>
+        </div>
     </div>
 
-    <div id="scroll-progress"></div>
+    <nav class="side-nav">
+        <div class="nav-dot active"></div>
+        <div class="nav-dot"></div>
+        <div class="nav-dot"></div>
+    </nav>
 
-    <section class="hero">
-        <div class="bg-vignette"></div>
-        <div class="hero-content">
-            <span class="pre-title">Projeto de Educação Digital</span>
-            <h1 class="main-title">CHRONOS</h1>
-            <p>Uma viagem imersiva pelas revoluções que definiram o destino do Homem.</p>
-            <div class="scroll-indicator"></div>
+    <section class="hero-v3">
+        <div class="noise-bg"></div>
+        <div class="content-v3">
+            <div class="status-bar"><span>● LIVE</span> 2026 EDITION</div>
+            <h1 class="title-reveal">CHRONOS</h1>
+            <p class="hero-desc">Explorando as Singularidades que Redefiniram a Espécie.</p>
         </div>
+        <div class="scroll-hint">DESLIZE PARA EXPLORAR</div>
     </section>
 
-    <main id="timeline-v2"></main>
+    <main id="timeline-container"></main>
 
-    <footer class="pro-footer">
-        <p>Desenvolvido para Excelência Académica • 2024</p>
+    <footer class="ultra-footer">
+        <div class="footer-grid">
+            <span>© 2026</span>
+            <span>PROJETO AVANÇADO DE ED. DIGITAL</span>
+            <span>ALTO DESEMPENHO</span>
+        </div>
     </footer>
 
-    <audio id="click-sound" src="https://www.soundjay.com/buttons/sounds/button-16.mp3"></audio>
-    
     <script src="script.js"></script>
 </body>
 </html>
