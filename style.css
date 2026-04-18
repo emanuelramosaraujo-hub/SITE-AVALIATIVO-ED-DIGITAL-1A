@@ -1,109 +1,68 @@
-/* --- DESIGN SYSTEM & VARIÁVEIS --- */
-:root {
-    /* Cores */
-    --primary: #00f2ff;
-    --bg: #050505;
-    --card-bg: rgba(255, 255, 255, 0.03);
-    --text-high: #ffffff;
-    --text-low: #a0a0a0;
-    --border: rgba(255, 255, 255, 0.1);
-    
-    /* Layout */
-    --radius: 24px;
-    --font-size: 1rem;
-    --spacing: 2rem;
-    --transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+// --- GESTÃO DE DADOS ---
+const historyData = [
+    { t: "Domínio do Fogo", d: "Energia térmica e cozimento proteico.", tags: "400k a.C.", img: "image_753503.png" },
+    { t: "Prensa de Gutenberg", d: "A revolução da informação escrita.", tags: "1450", img: "image_753844.png" },
+    { t: "Lâmpada Elétrica", d: "O fim da dependência do ciclo solar.", tags: "1879", img: "image_753be7.png" },
+    { t: "Penicilina", d: "A era da medicina moderna.", tags: "1928", img: "image_753f6c.png" },
+    { t: "Apolo 11", d: "O salto gigante da humanidade.", tags: "1969", img: "image_754005.png" },
+    { t: "Era da IA", d: "Inteligência generativa e futuro.", tags: "2026", img: "image_75432d.png" }
+];
+
+const faqData = [
+    { q: "Qual o foco deste projeto?", a: "Unir UX moderna com acessibilidade inclusiva." },
+    { q: "Como as fontes aumentam?", a: "Usamos Variáveis CSS para escalar todo o layout proporcionalmente." }
+];
+
+// --- RENDERIZAÇÃO ---
+function initApp() {
+    const grid = document.getElementById('dynamic-grid');
+    const accRoot = document.getElementById('accordion-root');
+
+    grid.innerHTML = historyData.map(item => `
+        <article class="card">
+            <img src="${item.img}" alt="${item.t}">
+            <span style="color: var(--primary)">${item.tags}</span>
+            <h3>${item.t}</h3>
+            <p style="color: var(--text-muted)">${item.d}</p>
+        </article>
+    `).join('');
+
+    accRoot.innerHTML = faqData.map((item, i) => `
+        <div class="accordion-item">
+            <button class="acc-trigger" aria-expanded="false" onclick="toggleAcc(${i})">
+                ${item.q}
+            </button>
+            <div class="acc-content" id="acc-${i}">
+                <p>${item.a}</p>
+            </div>
+        </div>
+    `).join('');
 }
 
-/* --- MODO ALTO CONTRASTE (Implementação conforme Prompt) --- */
-body.high-contrast {
-    --primary: #ffff00;
-    --bg: #000;
-    --card-bg: #000;
-    --text-high: #fff;
-    --text-low: #fff;
-    --border: #fff;
+// --- FUNÇÕES DE ACESSIBILIDADE ---
+let fontSize = 1;
+function changeFontSize(type) {
+    fontSize += (type === 'increase' ? 0.1 : -0.1);
+    document.documentElement.style.setProperty('--font-base', `${fontSize}rem`);
 }
 
-/* --- ESTILOS BASE --- */
-body {
-    background: var(--bg);
-    color: var(--text-high);
-    font-family: 'Inter', system-ui, -apple-system, sans-serif;
-    font-size: var(--font-size);
-    line-height: 1.6;
-    margin: 0;
-    transition: var(--transition);
+document.getElementById('contrast-toggle').addEventListener('click', () => {
+    document.body.classList.toggle('high-contrast');
+});
+
+function toggleAcc(index) {
+    const contents = document.querySelectorAll('.acc-content');
+    contents[index].classList.toggle('open');
 }
 
-/* Acessibilidade: Skip Link */
-.skip-link {
-    position: absolute; top: -100px; left: 0; background: var(--primary);
-    color: #000; padding: 1rem; z-index: 999;
-}
-.skip-link:focus { top: 0; }
+// --- SCROLL REVEAL ---
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+        if (e.isIntersecting) e.target.classList.add('reveal');
+    });
+}, { threshold: 0.1 });
 
-/* Header & Nav */
-.a11y-controls {
-    position: fixed; top: 20px; right: 20px; z-index: 100;
-    display: flex; gap: 10px; background: rgba(0,0,0,0.5); padding: 10px; border-radius: 50px;
-    backdrop-filter: blur(10px); border: 1px solid var(--border);
-}
-
-.a11y-controls button {
-    background: none; border: 1px solid var(--border); color: #fff;
-    padding: 8px 15px; border-radius: 20px; cursor: pointer; transition: 0.3s;
-}
-
-.a11y-controls button:hover { background: var(--primary); color: #000; }
-
-/* --- GRID SYSTEM (Mobile-First) --- */
-.grid-container {
-    display: grid;
-    grid-template-columns: 1fr; /* 1 coluna no mobile */
-    gap: var(--spacing);
-    padding: var(--spacing);
-    max-width: 1300px;
-    margin: 0 auto;
-}
-
-/* Tablet: 2 Colunas */
-@media (min-width: 768px) {
-    .grid-container { grid-template-columns: repeat(2, 1fr); }
-}
-
-/* Desktop: 3 Colunas */
-@media (min-width: 1024px) {
-    .grid-container { grid-template-columns: repeat(3, 1fr); }
-}
-
-/* --- COMPONENTES --- */
-.card {
-    background: var(--card-bg);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 2.5rem;
-    backdrop-filter: blur(15px);
-    transition: var(--transition);
-    opacity: 0; transform: translateY(30px); /* Para o Scroll Reveal */
-}
-
-.card:hover { border-color: var(--primary); transform: translateY(-10px) scale(1.02); }
-
-.card.visible { opacity: 1; transform: translateY(0); }
-
-/* Acordeão Estilizado */
-.accordion-item { border-bottom: 1px solid var(--border); margin: 0 auto; max-width: 800px; }
-
-.accordion-trigger {
-    width: 100%; background: none; border: none; padding: 2rem;
-    color: var(--text-high); font-size: 1.2rem; font-weight: bold;
-    display: flex; justify-content: space-between; cursor: pointer;
-}
-
-.accordion-content {
-    max-height: 0; overflow: hidden; transition: max-height 0.5s ease;
-    padding: 0 2rem; color: var(--text-low);
-}
-
-.accordion-content.active { max-height: 500px; padding-bottom: 2rem; }
+document.addEventListener('DOMContentLoaded', () => {
+    initApp();
+    document.querySelectorAll('.card, .reveal').forEach(el => observer.observe(el));
+});
