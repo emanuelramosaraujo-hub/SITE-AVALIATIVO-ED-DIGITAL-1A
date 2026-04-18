@@ -3,45 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CHRONOS | THE SINGULARITY</title>
+    <title>CHRONOS | Evolução Humana</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="grain"></div>
-    <div id="cursor-glow"></div>
+    <a href="#main-content" class="skip-link">Pular para o conteúdo</a>
 
-    <div id="loader">
-        <div class="terminal-text">BOOTING_HUMAN_HISTORY_V4.2...</div>
-        <div class="load-bar"><div class="fill"></div></div>
-    </div>
-
-    <nav class="hud-nav">
-        <div class="nav-item" data-index="0">01</div>
-        <div class="nav-item" data-index="1">02</div>
-        <div class="nav-item" data-index="2">03</div>
-        <div class="nav-item" data-index="3">04</div>
-        <div class="nav-item" data-index="4">05</div>
-        <div class="nav-item" data-index="5">06</div>
-    </nav>
-
-    <section class="mega-hero">
-        <div class="glitch-wrapper">
-            <h1 class="hero-title">CHRONOS</h1>
+    <header role="banner">
+        <nav class="accessibility-bar" aria-label="Controles de Acessibilidade">
+            <button onclick="changeFontSize('increase')" aria-label="Aumentar fonte">A+</button>
+            <button onclick="changeFontSize('decrease')" aria-label="Diminuir fonte">A-</button>
+            <button id="contrast-toggle" aria-label="Alternar alto contraste">Inverter Contraste</button>
+        </nav>
+        
+        <div class="hero-container">
+            <h1>CHRONOS</h1>
+            <p>A linha do tempo definitiva das revoluções tecnológicas.</p>
         </div>
-        <div class="hero-sub">
-            <span>[ SYSTEM STATUS: EVOLVING ]</span>
-            <p>O arquivo definitivo das transições de fase da civilização terrestre.</p>
-        </div>
-        <div class="scroll-call">PROCEED TO ORIGIN</div>
-    </section>
+    </header>
 
-    <main id="ultra-engine"></main>
+    <main id="main-content">
+        <section id="timeline" aria-labelledby="timeline-title">
+            <h2 id="timeline-title" class="sr-only">Descobertas Históricas</h2>
+            <div id="dynamic-grid" class="grid-layout">
+                </div>
+        </section>
 
-    <footer class="final-frontier">
-        <div class="footer-content">
-            <div class="footer-logo">CHRONOS.2026</div>
-            <p>A história não acabou. Ela está apenas sendo processada.</p>
-        </div>
+        <section id="details" aria-labelledby="details-title">
+            <h2 id="details-title">Especificações Técnicas</h2>
+            <div id="accordion-container" class="accordion">
+                </div>
+        </section>
+    </main>
+
+    <footer role="contentinfo">
+        <p>&copy; 2026 Chronos Project - Foco em UX e Acessibilidade.</p>
     </footer>
 
     <script src="script.js"></script>
